@@ -1,0 +1,30 @@
+version: '3.7'
+services: 
+    verification_back:
+        container_name: verification_back
+        restart: always
+        devices:
+          - /dev/video0:/dev/video0
+        build:
+          network: host
+          context: ./app/
+          dockerfile: Dockerfile
+        volumes:
+          - "/data/ultra/verification/app/photos:/photos"
+          - "/data/ultra/verification/app/app:/app"
+          - "/var/run/docker.sock:/var/run/docker.sock"
+          - "/data/ultra/docker:/data/ultra/docker"
+          - "/mnt/disk/applications:/mnt/disk/applications"
+        ports: 
+          - "8000:8000"
+        
+    verification_front:
+        container_name: verification_front
+        build: 
+            network: host
+            context: ./ui/
+            dockerfile: Dockerfile
+        ports: 
+            - "7000:80"
+        restart: always
+        
